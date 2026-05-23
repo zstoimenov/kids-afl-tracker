@@ -39,12 +39,10 @@
   button { font-family: inherit; cursor: pointer; }
   button:active { opacity: 0.72; transform: scale(0.96); }
 
-  /* ── HEADER ── */
   .header { text-align: center; margin-bottom: 12px; }
   .header-sub { font-size: 10px; letter-spacing: 6px; color: var(--gold); text-transform: uppercase; }
   .header-title { font-size: 22px; font-weight: bold; color: #fff; letter-spacing: 1px; }
 
-  /* ── TIMER BAR ── */
   .timer-bar {
     display: flex; align-items: center; justify-content: space-between;
     background: var(--surface); border: 1px solid rgba(245,197,24,0.18);
@@ -62,7 +60,6 @@
   }
   .clock.running { color: var(--gold); }
   .clock.stopped { color: #fff; }
-  /* Tappable hint — only shown pre-game */
   .clock.editable {
     color: #fff;
     border-bottom: 1px dashed rgba(245,197,24,0.4);
@@ -99,7 +96,6 @@
   }
   .x-btn { color: #fff; border: none; border-radius: 5px; padding: 3px 7px; font-size: 10px; }
 
-  /* ── SCOREBOARD ── */
   .scoreboard {
     display: flex; align-items: stretch;
     width: 100%; max-width: 480px;
@@ -114,7 +110,6 @@
   }
   .team-col.left { border-radius: 20px 0 0 20px; border-right: none; }
   .team-col.right { border-radius: 0 20px 20px 0; border-left: none; }
-
   .team-col.hp-home { background: var(--hp-green); }
   .team-col.hp-away { background: #f0f8f0; }
   .team-col.opp-lead { background: rgba(26,58,107,0.22); }
@@ -153,7 +148,6 @@
   .undo-row { display: flex; gap: 5px; }
   .undo-btn { flex: 1; border-radius: 7px; padding: 7px 0; font-size: 12px; }
 
-  /* ── SWAP BUTTON ── */
   .swap-wrap {
     position: absolute; top: 12px; left: 50%;
     transform: translateX(-50%); z-index: 10; pointer-events: none;
@@ -167,7 +161,6 @@
   }
   .swap-btn:active { background: rgba(245,197,24,0.15); }
 
-  /* ── GOAL FLASH OVERLAY ── */
   #goal-flash {
     position: fixed; inset: 0; z-index: 999;
     display: flex; flex-direction: column;
@@ -225,6 +218,40 @@
   .qb-score { font-size: 44px; font-weight: 900; line-height: 1; }
   .qb-fmt { font-size: 13px; color: #888; margin-top: 2px; }
   .qb-leading { font-size: 11px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; min-height: 16px; }
+
+  /* Quarter moment capture */
+  .qb-moment-section {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 16px; margin-bottom: 16px; text-align: left;
+  }
+  .qb-moment-label {
+    font-size: 9px; letter-spacing: 3px; color: rgba(245,197,24,0.6);
+    text-transform: uppercase; margin-bottom: 8px; display: block;
+  }
+  .qb-moment-input {
+    width: 100%; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(245,197,24,0.2); border-radius: 10px;
+    color: var(--text); font-size: 13px; padding: 10px 12px;
+    font-family: inherit; resize: none; outline: none; line-height: 1.5;
+    min-height: 60px; margin-bottom: 10px;
+  }
+  .qb-moment-input:focus { border-color: rgba(245,197,24,0.5); background: rgba(255,255,255,0.07); }
+  .qb-moment-input::placeholder { color: #444; }
+  .qb-emotion-row {
+    display: flex; gap: 8px; justify-content: center;
+  }
+  .qb-emotion-btn {
+    flex: 1; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 10px;
+    padding: 8px 4px; font-size: 22px; cursor: pointer;
+    transition: all 0.15s; text-align: center;
+  }
+  .qb-emotion-btn.selected {
+    background: rgba(245,197,24,0.15);
+    border-color: rgba(245,197,24,0.6);
+  }
+  .qb-emotion-btn:active { transform: scale(0.92); }
+
   .qb-btn {
     width: 100%; background: var(--gold); color: #000;
     border: none; border-radius: 12px; padding: 14px 0;
@@ -237,15 +264,11 @@
     background: var(--alek-dim); border: 1px solid rgba(245,197,24,0.25);
     border-radius: 16px; padding: 14px 16px;
   }
-
-  /* Row 1: label left, position buttons right */
   .alek-header-row {
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 8px; gap: 8px;
   }
   .alek-label-text { font-size: 18px; letter-spacing: 1px; color: var(--gold); text-transform: none; opacity: 0.9; font-weight: bold; }
-
-  /* Position buttons */
   .position-btns {
     display: flex; gap: 5px; align-items: center;
     padding: 6px 8px;
@@ -264,47 +287,28 @@
     box-shadow: 0 0 8px rgba(245,197,24,0.25);
   }
   .pos-btn:active { transform: scale(0.92); }
-
-  /* Stats rows — full width, forced single line */
   .alek-stats-match {
     display: flex; align-items: baseline; gap: 7px;
     white-space: nowrap; overflow: hidden;
     font-variant-numeric: tabular-nums;
     margin-bottom: 4px;
   }
-  .alek-stat-score {
-    font-size: 26px; font-weight: bold; color: #fff; line-height: 1; flex-shrink: 0;
-  }
-  .alek-stat-pts {
-    font-size: 14px; color: var(--muted); font-weight: normal; flex-shrink: 0;
-  }
-  .alek-stat-sep {
-    font-size: 13px; color: rgba(255,255,255,0.2); font-weight: normal; flex-shrink: 0;
-  }
-  .alek-stat-val {
-    font-size: 15px; font-weight: bold; color: rgba(255,255,255,0.85); flex-shrink: 0;
-  }
-  .alek-stat-label {
-    font-size: 10px; color: var(--muted); font-weight: normal; letter-spacing: 0.5px; flex-shrink: 0;
-  }
-
-  /* Q tally row */
+  .alek-stat-score { font-size: 26px; font-weight: bold; color: #fff; line-height: 1; flex-shrink: 0; }
+  .alek-stat-pts { font-size: 14px; color: var(--muted); font-weight: normal; flex-shrink: 0; }
+  .alek-stat-sep { font-size: 13px; color: rgba(255,255,255,0.2); font-weight: normal; flex-shrink: 0; }
+  .alek-stat-val { font-size: 15px; font-weight: bold; color: rgba(255,255,255,0.85); flex-shrink: 0; }
+  .alek-stat-label { font-size: 10px; color: var(--muted); font-weight: normal; letter-spacing: 0.5px; flex-shrink: 0; }
   .alek-stats-q {
     display: flex; align-items: baseline; gap: 6px;
     white-space: nowrap; overflow: hidden;
     font-variant-numeric: tabular-nums;
     margin-bottom: 10px;
   }
-  .alek-q-label {
-    font-size: 10px; letter-spacing: 2px; color: rgba(245,197,24,0.6);
-    text-transform: uppercase; font-weight: bold; align-self: center; flex-shrink: 0;
-  }
+  .alek-q-label { font-size: 10px; letter-spacing: 2px; color: rgba(245,197,24,0.6); text-transform: uppercase; font-weight: bold; align-self: center; flex-shrink: 0; }
   .alek-q-score  { font-size: 15px; font-weight: bold; color: rgba(255,255,255,0.65); flex-shrink: 0; }
   .alek-q-pts    { font-size: 12px; color: var(--muted); flex-shrink: 0; }
   .alek-q-val    { font-size: 13px; font-weight: bold; color: rgba(255,255,255,0.55); flex-shrink: 0; }
   .alek-q-statLabel { font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 0.5px; flex-shrink: 0; }
-
-  /* Scoring grid — top border acts as natural divider from stats */
   .alek-btn-grid {
     display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
     border-top: 1px solid rgba(255,255,255,0.08);
@@ -323,21 +327,14 @@
     min-width: 22px; height: 22px; border-radius: 99px;
     background: rgba(245,197,24,0.95); color: #1a1000;
     font-size: 13px; font-weight: bold; line-height: 22px; text-align: center;
-    padding: 0 4px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.5);
-    pointer-events: none;
-    display: none;
+    padding: 0 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    pointer-events: none; display: none;
   }
-
-  /* Skills section */
   .skills-section {
     border-top: 1px solid rgba(255,255,255,0.1);
     margin-top: 14px; padding-top: 12px;
   }
-  .skills-label {
-    font-size: 10px; letter-spacing: 4px; color: var(--gold);
-    text-transform: uppercase; margin-bottom: 10px; opacity: 0.7;
-  }
+  .skills-label { font-size: 10px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; opacity: 0.7; }
   .skill-block { margin-bottom: 8px; }
   .skill-block:last-child { margin-bottom: 0; }
   .skill-row { display: flex; gap: 8px; }
@@ -356,10 +353,8 @@
     min-width: 22px; height: 22px; border-radius: 99px;
     background: rgba(245,197,24,0.95); color: #1a1000;
     font-size: 13px; font-weight: bold; line-height: 22px; text-align: center;
-    padding: 0 4px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.5);
-    pointer-events: none;
-    display: none;
+    padding: 0 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    pointer-events: none; display: none;
   }
 
   .fulltime {
@@ -397,13 +392,44 @@
   .notes-input:focus { border-color: rgba(245,197,24,0.5); background: rgba(255,255,255,0.06); }
   .notes-input::placeholder { color: #444; }
 
+  /* Q4 moment on full-time screen */
+  .q4-moment-section {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 14px; margin-bottom: 14px;
+  }
+  .q4-moment-label {
+    font-size: 10px; letter-spacing: 3px; color: var(--gold);
+    text-transform: uppercase; margin-bottom: 8px; display: block;
+  }
+  .q4-moment-input {
+    width: 100%; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(245,197,24,0.2); border-radius: 8px;
+    color: var(--text); font-size: 13px; padding: 10px 12px;
+    font-family: inherit; resize: vertical; outline: none; line-height: 1.5;
+    min-height: 60px; margin-bottom: 10px;
+  }
+  .q4-moment-input:focus { border-color: rgba(245,197,24,0.5); background: rgba(255,255,255,0.06); }
+  .q4-moment-input::placeholder { color: #444; }
+  .q4-emotion-row {
+    display: flex; gap: 8px;
+  }
+  .q4-emotion-btn {
+    flex: 1; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 10px;
+    padding: 8px 4px; font-size: 22px; cursor: pointer;
+    transition: all 0.15s; text-align: center;
+  }
+  .q4-emotion-btn.selected {
+    background: rgba(245,197,24,0.15);
+    border-color: rgba(245,197,24,0.6);
+  }
+  .q4-emotion-btn:active { transform: scale(0.92); }
+
   .reset-btn {
     background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14);
     border-radius: 9px; color: #aaa; font-size: 12px;
     padding: 5px 14px; letter-spacing: 0.5px;
   }
-
-  /* ── GLOBAL UNDO ── */
   .global-undo-btn {
     background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14);
     border-radius: 9px; color: #aaa; font-size: 12px;
@@ -411,47 +437,28 @@
     transition: background 0.15s;
   }
   .global-undo-btn:active { background: rgba(255,255,255,0.12); color: #fff; }
-
-  /* ── HEADER ACTION ROW ── */
   .header-actions {
     display: flex; gap: 8px; justify-content: space-between;
     align-items: center; margin-top: 8px;
     width: 100%; max-width: 480px; margin-left: auto; margin-right: auto;
   }
-
-  /* ── CENTRE PANELS on wider screens ── */
   .timer-bar, .scoreboard, .alek-panel, .fulltime {
     margin-left: auto; margin-right: auto;
   }
 
   @media (orientation: landscape) and (max-height: 500px) {
     body { padding: 8px 10px 20px; flex-direction: column; }
-
     .header { margin-bottom: 6px; }
     .header-title { font-size: 16px; }
     .header-sub { font-size: 9px; }
-
-    .timer-bar {
-      max-width: 100%; padding: 6px 12px; margin-bottom: 8px;
-      gap: 10px;
-    }
+    .timer-bar { max-width: 100%; padding: 6px 12px; margin-bottom: 8px; gap: 10px; }
     .qtr-label { font-size: 24px; }
     .clock { font-size: 24px; letter-spacing: 3px; }
     .qtr-badge { min-width: 38px; }
     .timer-btns { min-width: 80px; }
-
-    /* Two-column main layout: scoreboard left, alek panel right */
-    .landscape-wrapper {
-      display: flex; flex-direction: row; gap: 10px;
-      width: 100%; align-items: flex-start;
-    }
-    .scoreboard {
-      flex: 1.2; max-width: none; margin-bottom: 0;
-    }
-    .alek-panel {
-      flex: 1; max-width: none; margin-bottom: 0;
-      padding: 10px 12px;
-    }
+    .landscape-wrapper { display: flex; flex-direction: row; gap: 10px; width: 100%; align-items: flex-start; }
+    .scoreboard { flex: 1.2; max-width: none; margin-bottom: 0; }
+    .alek-panel { flex: 1; max-width: none; margin-bottom: 0; padding: 10px 12px; }
     .big-score { font-size: 48px; }
     .afl-fmt { font-size: 13px; }
     .pct-badge { font-size: 11px; margin-bottom: 8px; }
@@ -459,7 +466,6 @@
     .undo-btn { padding: 5px 0; font-size: 11px; }
     .score-btns { gap: 5px; }
     .team-col { padding: 10px 7px; }
-
     .alek-score { font-size: 18px; }
     .alek-btn { padding: 9px 4px; font-size: 11px; }
     .alek-btn-grid { gap: 5px; margin-bottom: 7px; }
@@ -467,14 +473,11 @@
     .skills-section { margin-top: 8px; padding-top: 8px; }
     .skill-btn { padding: 8px 4px; font-size: 11px; }
     .skill-row { grid-template-columns: 56px 40px 1fr; gap: 6px; }
-
-    /* Full time stack below */
     .fulltime { max-width: 100%; }
   }
 
   @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* ── FIXTURE MODAL ── */
   #fixture-modal {
     position: fixed; inset: 0; z-index: 997;
     background: rgba(6,13,6,0.92);
@@ -490,52 +493,25 @@
     display: flex; flex-direction: column;
     animation: fadeIn 0.22s ease;
   }
-  .fixture-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 14px; flex-shrink: 0;
-  }
-  .fixture-title {
-    font-size: 11px; letter-spacing: 5px; color: var(--gold);
-    text-transform: uppercase;
-  }
-  .fixture-close {
-    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 8px; color: #aaa; font-size: 14px;
-    padding: 4px 10px; line-height: 1;
-  }
+  .fixture-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-shrink: 0; }
+  .fixture-title { font-size: 11px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; }
+  .fixture-close { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: #aaa; font-size: 14px; padding: 4px 10px; line-height: 1; }
   .fixture-scroll { overflow-y: auto; flex: 1; }
-  .fixture-row {
-    display: flex; align-items: center; gap: 12px;
-    padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
-  }
+  .fixture-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
   .fixture-row:last-child { border-bottom: none; }
-  .fixture-date {
-    font-size: 11px; font-weight: bold; color: #888;
-    min-width: 44px; text-align: center; line-height: 1.3;
-    flex-shrink: 0;
-  }
+  .fixture-date { font-size: 11px; font-weight: bold; color: #888; min-width: 44px; text-align: center; line-height: 1.3; flex-shrink: 0; }
   .fixture-info { flex: 1; }
   .fixture-opp { font-size: 13px; color: var(--text); }
   .fixture-detail { font-size: 10px; color: #666; margin-top: 2px; }
-  .fixture-pill {
-    font-size: 10px; padding: 3px 9px; border-radius: 99px;
-    font-weight: bold; flex-shrink: 0; letter-spacing: 0.5px;
-  }
+  .fixture-pill { font-size: 10px; padding: 3px 9px; border-radius: 99px; font-weight: bold; flex-shrink: 0; letter-spacing: 0.5px; }
   .pill-done { background: rgba(255,255,255,0.07); color: #555; }
   .pill-next { background: rgba(245,197,24,0.15); color: var(--gold); border: 1px solid rgba(245,197,24,0.4); }
   .pill-upcoming { background: rgba(255,255,255,0.04); color: #444; }
-
-  /* ── FIXTURE BUTTON (header row) ── */
-  .cal-btn {
-    background: rgba(245,197,24,0.1); border: 1px solid rgba(245,197,24,0.35);
-    border-radius: 9px; color: var(--gold); font-size: 12px;
-    padding: 5px 12px; letter-spacing: 0.5px;
-  }
+  .cal-btn { background: rgba(245,197,24,0.1); border: 1px solid rgba(245,197,24,0.35); border-radius: 9px; color: var(--gold); font-size: 12px; padding: 5px 12px; letter-spacing: 0.5px; }
 </style>
 </head>
 <body>
 
-<!-- GOAL FLASH OVERLAY -->
 <div id="goal-flash">
   <div class="flash-inner">
     <div class="flash-icon" id="flash-icon">🏉</div>
@@ -562,6 +538,18 @@
       </div>
     </div>
     <div class="qb-leading" id="qb-leading"></div>
+
+    <!-- MOMENT CAPTURE -->
+    <div class="qb-moment-section">
+      <span class="qb-moment-label" id="qb-moment-label">Q1 MOMENT</span>
+      <textarea class="qb-moment-input" id="qb-moment-input" placeholder="What happened this quarter?" oninput="saveQbMoment()"></textarea>
+      <div class="qb-emotion-row">
+        <button class="qb-emotion-btn" id="qb-em-fire" onclick="selectQbEmotion('🔥')">🔥</button>
+        <button class="qb-emotion-btn" id="qb-em-steady" onclick="selectQbEmotion('😐')">😐</button>
+        <button class="qb-emotion-btn" id="qb-em-tough" onclick="selectQbEmotion('😤')">😤</button>
+      </div>
+    </div>
+
     <button class="qb-btn" onclick="dismissQtrBreak()">▶ Start Q<span id="qb-next-q">2</span></button>
   </div>
 </div>
@@ -580,7 +568,7 @@
 <!-- HEADER -->
 <div class="header">
   <div class="header-sub">Kids League</div>
-  <div class="header-title">AFL Scorecard <span style="font-size:12px;color:var(--gold);font-weight:normal;letter-spacing:2px;opacity:0.7;">v2.0</span></div>
+  <div class="header-title">AFL Scorecard <span style="font-size:12px;color:var(--gold);font-weight:normal;letter-spacing:2px;opacity:0.7;">v2.1</span></div>
   <div class="header-actions">
     <button class="global-undo-btn" id="global-undo-btn" onclick="globalUndo()">↩ Undo</button>
     <button class="reset-btn" onclick="resetMatch()">↺ New Match</button>
@@ -602,7 +590,6 @@
   </div>
 </div>
 
-<!-- LANDSCAPE WRAPPER (flex row in landscape, transparent in portrait) -->
 <div class="landscape-wrapper" id="landscape-wrapper" style="flex-direction:column;width:100%;align-items:center;">
 
 <!-- SCOREBOARD -->
@@ -619,11 +606,9 @@
       <button class="score-btn" id="left-behind-btn" onclick="scoreLeft('behinds')">← Behind +1</button>
     </div>
   </div>
-
   <div class="swap-wrap">
     <button class="swap-btn" onclick="swapSlots()" title="Swap home / away">⇄</button>
   </div>
-
   <div class="team-col right" id="right-col">
     <div class="position-label" id="right-pos-label"></div>
     <div class="leading-badge" id="right-leading"></div>
@@ -640,8 +625,6 @@
 
 <!-- ALEK PANEL -->
 <div class="alek-panel">
-
-  <!-- Row 1: label left, position buttons right -->
   <div class="alek-header-row">
     <div class="alek-label-text">⭐ Alek · #13</div>
     <div class="position-btns">
@@ -650,8 +633,6 @@
       <button class="pos-btn" id="pos-fwd" onclick="setPosition('forward')" title="Forward">🏹</button>
     </div>
   </div>
-
-  <!-- Row 2: Match stats — full width, single line -->
   <div class="alek-stats-match" id="alek-stats-match">
     <span class="alek-stat-score" id="alek-stat-score">0.0</span>
     <span class="alek-stat-pts" id="alek-stat-pts">(0 pts)</span>
@@ -665,8 +646,6 @@
     <span class="alek-stat-val" id="alek-stat-dis" style="display:none"></span>
     <span class="alek-stat-label" id="alek-stat-dis-lbl" style="display:none">dis</span>
   </div>
-
-  <!-- Row 3: Q stats — full width, single line, smaller -->
   <div class="alek-stats-q" id="alek-stats-q" style="display:none">
     <span class="alek-q-label" id="alek-q-label">Q1</span>
     <span class="alek-q-score" id="alek-q-score">0.0</span>
@@ -681,8 +660,6 @@
     <span class="alek-q-val" id="alek-q-dis" style="display:none"></span>
     <span class="alek-q-statLabel" id="alek-q-dis-lbl" style="display:none">dis</span>
   </div>
-
-  <!-- Divider + Row 4: Scoring buttons -->
   <div class="alek-btn-grid">
     <button class="alek-btn" style="background:#b8860b" onclick="alekScore('goals')">
       <span class="btn-badge" id="badge-goals">0</span>
@@ -697,12 +674,8 @@
       🎯 Miss<span class="btn-sub">shot only</span>
     </button>
   </div>
-
-  <!-- Skills section -->
   <div class="skills-section">
     <div class="skills-label">Skills Tracker</div>
-
-    <!-- Tackle row -->
     <div class="skill-block">
       <div class="skill-row">
         <button class="skill-btn" style="background:#3a1f5a;border:1px solid rgba(192,132,252,0.3)" onclick="skillAttempt('tackle')">
@@ -719,8 +692,6 @@
         </button>
       </div>
     </div>
-
-    <!-- Disposal row -->
     <div class="skill-block">
       <div class="skill-row">
         <button class="skill-btn" style="background:#0f2d4a;border:1px solid rgba(103,192,244,0.3)" onclick="skillAttempt('disposal')">
@@ -737,7 +708,6 @@
         </button>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -765,6 +735,18 @@
     <div class="ft-alek-label">Alek's game</div>
     <div class="ft-alek-stat" id="ft-alek-stat"></div>
   </div>
+
+  <!-- Q4 MOMENT -->
+  <div class="q4-moment-section">
+    <span class="q4-moment-label">Q4 MOMENT</span>
+    <textarea class="q4-moment-input" id="q4-moment-input" placeholder="What happened in Q4?" oninput="saveQ4Moment()"></textarea>
+    <div class="q4-emotion-row">
+      <button class="q4-emotion-btn" id="q4-em-fire" onclick="selectQ4Emotion('🔥')">🔥</button>
+      <button class="q4-emotion-btn" id="q4-em-steady" onclick="selectQ4Emotion('😐')">😐</button>
+      <button class="q4-emotion-btn" id="q4-em-tough" onclick="selectQ4Emotion('😤')">😤</button>
+    </div>
+  </div>
+
   <div class="notes-section">
     <div class="notes-label">📝 Coach Notes</div>
     <div class="notes-row">
@@ -779,38 +761,26 @@
     </div>
   </div>
   <textarea class="copy-ta" id="copy-ta" readonly></textarea>
-  <button class="copy-btn" id="copy-btn" onclick="copyResult()">📋 Copy Result to Clipboard</button>
+  <button class="copy-btn" id="copy-btn" style="background:var(--gold);color:#000;" onclick="copyResult()">📋 Copy Result to Clipboard</button>
   <div class="copy-hint">Paste into your project to log the season</div>
 </div>
 
 <script>
 // ── HAPTICS ──
-function vibrate(pattern) {
-  if (navigator.vibrate) navigator.vibrate(pattern);
-}
-
-// Scoring
-function hapticGoal()         { vibrate([100, 50, 100]); }           // HP goal — two medium pulses
-function hapticAlekGoal()     { vibrate([200, 60, 200, 60, 200]); }  // Alek goal — three strong pulses
-function hapticBehind()       { vibrate(40); }                        // Behind — single soft tap
-function hapticMissedShot()   { vibrate([15, 30, 15]); }             // Missed shot — subtle flutter
-
-// Skills
-function hapticTackleAttempt()  { vibrate(30); }                     // Tackle attempt — short tap
-function hapticTackle()         { vibrate([80, 40, 60]); }           // Tackle won — firm double
-function hapticDisposalAttempt(){ vibrate(25); }                     // Disposal attempt — light tap
-function hapticDisposal()       { vibrate([40, 20, 40]); }           // Disposal clean — crisp double
-
-// UI feedback — all other buttons
-function hapticTap()          { vibrate(25); }                        // Simple button press confirmation
-function hapticUndo()         { vibrate(20); }                        // Undo — minimal
-
-// Timer events
-function hapticSixtySeconds() { vibrate([50, 80, 50, 80, 50]); }    // 60s warning — rapid triple
-function hapticEndQuarter()   { vibrate([150, 80, 150]); }           // End of quarter — two firm pulses
-function hapticEndMatch()     { vibrate([300, 100, 300, 100, 300]); }// Full time — three long pulses
-
-// Track 60s warning so it only fires once per quarter
+function vibrate(pattern) { if (navigator.vibrate) navigator.vibrate(pattern); }
+function hapticGoal()           { vibrate([100, 50, 100]); }
+function hapticAlekGoal()       { vibrate([200, 60, 200, 60, 200]); }
+function hapticBehind()         { vibrate(40); }
+function hapticMissedShot()     { vibrate([15, 30, 15]); }
+function hapticTackleAttempt()  { vibrate(30); }
+function hapticTackle()         { vibrate([80, 40, 60]); }
+function hapticDisposalAttempt(){ vibrate(25); }
+function hapticDisposal()       { vibrate([40, 20, 40]); }
+function hapticTap()            { vibrate(25); }
+function hapticUndo()           { vibrate(20); }
+function hapticSixtySeconds()   { vibrate([50, 80, 50, 80, 50]); }
+function hapticEndQuarter()     { vibrate([150, 80, 150]); }
+function hapticEndMatch()       { vibrate([300, 100, 300, 100, 300]); }
 let _60sWarningFired = false;
 
 // ── GOAL FLASH ──
@@ -844,13 +814,16 @@ const DEFAULT_STATE = {
   notes: { highlight: '', focus: '' },
   runStartedAt: null,
   secondsAtStart: 900,
-  currentPosition: null,   // 'defender' | 'midfielder' | 'forward' | null
+  currentPosition: null,
   quarters: [
     { position: null, goals: 0, behinds: 0, shots: 0, tackleAttempts: 0, tackleSuccess: 0, disposalAttempts: 0, disposalSuccess: 0 },
     { position: null, goals: 0, behinds: 0, shots: 0, tackleAttempts: 0, tackleSuccess: 0, disposalAttempts: 0, disposalSuccess: 0 },
     { position: null, goals: 0, behinds: 0, shots: 0, tackleAttempts: 0, tackleSuccess: 0, disposalAttempts: 0, disposalSuccess: 0 },
     { position: null, goals: 0, behinds: 0, shots: 0, tackleAttempts: 0, tackleSuccess: 0, disposalAttempts: 0, disposalSuccess: 0 },
   ],
+  // NEW: quarter moments
+  quarterMoments: ['', '', '', ''],
+  quarterEmotions: [null, null, null, null],
 };
 
 function loadState() {
@@ -867,14 +840,20 @@ function loadState() {
           alek: Object.assign({}, DEFAULT_STATE.alek, parsed.alek),
           notes: Object.assign({}, DEFAULT_STATE.notes, parsed.notes || {}),
           quarters,
-          currentPosition: parsed.currentPosition || null });
+          currentPosition: parsed.currentPosition || null,
+          quarterMoments: parsed.quarterMoments || ['', '', '', ''],
+          quarterEmotions: parsed.quarterEmotions || [null, null, null, null],
+        });
     }
   } catch(e) {}
   return Object.assign({}, DEFAULT_STATE,
     { hp: {...DEFAULT_STATE.hp}, opp: {...DEFAULT_STATE.opp},
       alek: {...DEFAULT_STATE.alek}, notes: {...DEFAULT_STATE.notes},
       quarters: DEFAULT_STATE.quarters.map(q => ({...q})),
-      currentPosition: null });
+      currentPosition: null,
+      quarterMoments: ['', '', '', ''],
+      quarterEmotions: [null, null, null, null],
+    });
 }
 
 function saveState() {
@@ -888,29 +867,26 @@ function saveState() {
 const state = loadState();
 let timerInterval = null;
 
-// On load: if timer was running, compute elapsed time against wall clock
+// Track which quarter is currently shown in the break overlay
+let _qbQuarterIdx = 0;
+
 (function resumeTimerIfRunning() {
   if (state.running && state.runStartedAt !== null) {
     const elapsed = Math.floor((Date.now() - state.runStartedAt) / 1000);
     state.secondsLeft = Math.max(0, state.secondsAtStart - elapsed);
     if (state.secondsLeft === 0) { state.running = false; state.runStartedAt = null; }
     else {
-      // If we're resuming with ≤60s left, don't re-fire the 60s warning
       if (state.secondsLeft <= 60) _60sWarningFired = true;
       timerInterval = setInterval(tickTimer, 500);
     }
   }
 })();
 
-// Has the game started? Locks clock editing once true.
 function gameStarted() {
-  return state.running ||
-         state.quarter > 1 ||
-         state.secondsLeft < state.quarterLength * 60 ||
-         state.finished;
+  return state.running || state.quarter > 1 ||
+         state.secondsLeft < state.quarterLength * 60 || state.finished;
 }
 
-// ── TIMESTAMP-BASED TIMER ──
 function toggleTimer() { state.running ? pauseTimer() : startTimer(); }
 
 function startTimer() {
@@ -919,31 +895,20 @@ function startTimer() {
   state.runStartedAt   = Date.now();
   state.secondsAtStart = state.secondsLeft;
   state.running = true;
-  saveState();
-  timerInterval = setInterval(tickTimer, 500);
-  render();
+  saveState(); timerInterval = setInterval(tickTimer, 500); render();
 }
 
 function tickTimer() {
   if (!state.running || state.runStartedAt === null) return;
   const elapsed = Math.floor((Date.now() - state.runStartedAt) / 1000);
   state.secondsLeft = Math.max(0, state.secondsAtStart - elapsed);
-
-  // 60-second warning — fires once per quarter
   if (state.secondsLeft === 60 && !_60sWarningFired) {
-    _60sWarningFired = true;
-    hapticSixtySeconds();
+    _60sWarningFired = true; hapticSixtySeconds();
   }
-
   if (state.secondsLeft === 0) {
     state.running = false; state.runStartedAt = null;
     clearInterval(timerInterval);
-    // End of quarter or end of match
-    if (state.quarter >= 4) {
-      hapticEndMatch();
-    } else {
-      hapticEndQuarter();
-    }
+    if (state.quarter >= 4) { hapticEndMatch(); } else { hapticEndQuarter(); }
     saveState(); render(); return;
   }
   if (state.secondsLeft % 10 === 0) saveState();
@@ -951,8 +916,7 @@ function tickTimer() {
 }
 
 function pauseTimer() {
-  hapticTap();
-  clearInterval(timerInterval);
+  hapticTap(); clearInterval(timerInterval);
   if (state.runStartedAt !== null) {
     const elapsed = Math.floor((Date.now() - state.runStartedAt) / 1000);
     state.secondsLeft = Math.max(0, state.secondsAtStart - elapsed);
@@ -961,7 +925,6 @@ function pauseTimer() {
   saveState(); render();
 }
 
-// ── TAPPABLE CLOCK EDIT (pre-game only) ──
 function tryEditClock() {
   if (gameStarted()) return;
   const wrap = document.getElementById('clock-wrap');
@@ -1021,7 +984,6 @@ function showQtrBreak() {
   const sOpp = calcScore(state.opp.goals, state.opp.behinds);
   const hpIsHome = state.hpSlot === 'left';
   const oppName = state.opp.name.trim() || 'Opponent';
-
   const homeData = hpIsHome
     ? { name: 'Hammond Park', sc: sHP, g: state.hp.goals, b: state.hp.behinds }
     : { name: oppName, sc: sOpp, g: state.opp.goals, b: state.opp.behinds };
@@ -1043,17 +1005,70 @@ function showQtrBreak() {
   const leading = sHP > sOpp ? 'Hammond Park leading' : sOpp > sHP ? `${oppName} leading` : 'Scores level';
   document.getElementById('qb-leading').textContent = leading;
 
+  // Set moment label and restore any saved value for this quarter
+  _qbQuarterIdx = state.quarter - 1;
+  document.getElementById('qb-moment-label').textContent = `Q${state.quarter} MOMENT`;
+  const inp = document.getElementById('qb-moment-input');
+  inp.value = state.quarterMoments[_qbQuarterIdx] || '';
+
+  // Restore emotion selection
+  const savedEmotion = state.quarterEmotions[_qbQuarterIdx];
+  ['🔥','😐','😤'].forEach(e => {
+    const id = e === '🔥' ? 'qb-em-fire' : e === '😐' ? 'qb-em-steady' : 'qb-em-tough';
+    const btn = document.getElementById(id);
+    if (btn) btn.classList.toggle('selected', savedEmotion === e);
+  });
+
   document.getElementById('qtr-break').classList.add('visible');
+}
+
+function saveQbMoment() {
+  const val = document.getElementById('qb-moment-input').value;
+  state.quarterMoments[_qbQuarterIdx] = val;
+  refreshClipboard();
+  saveState();
+}
+
+function selectQbEmotion(emotion) {
+  hapticTap();
+  // Toggle off if already selected
+  state.quarterEmotions[_qbQuarterIdx] = state.quarterEmotions[_qbQuarterIdx] === emotion ? null : emotion;
+  ['🔥','😐','😤'].forEach(e => {
+    const id = e === '🔥' ? 'qb-em-fire' : e === '😐' ? 'qb-em-steady' : 'qb-em-tough';
+    const btn = document.getElementById(id);
+    if (btn) btn.classList.toggle('selected', state.quarterEmotions[_qbQuarterIdx] === e);
+  });
+  refreshClipboard();
+  saveState();
+}
+
+function saveQ4Moment() {
+  const val = document.getElementById('q4-moment-input').value;
+  state.quarterMoments[3] = val;
+  refreshClipboard();
+  saveState();
+}
+
+function selectQ4Emotion(emotion) {
+  hapticTap();
+  state.quarterEmotions[3] = state.quarterEmotions[3] === emotion ? null : emotion;
+  ['🔥','😐','😤'].forEach(e => {
+    const id = e === '🔥' ? 'q4-em-fire' : e === '😐' ? 'q4-em-steady' : 'q4-em-tough';
+    const btn = document.getElementById(id);
+    if (btn) btn.classList.toggle('selected', state.quarterEmotions[3] === e);
+  });
+  refreshClipboard();
+  saveState();
 }
 
 function dismissQtrBreak() {
   hapticTap();
   document.getElementById('qtr-break').classList.remove('visible');
   state.quarter++;
-  state.currentPosition = null;   // reset position for new quarter
+  state.currentPosition = null;
   state.secondsLeft    = state.quarterLength * 60;
   state.secondsAtStart = state.quarterLength * 60;
-  _60sWarningFired = false;       // reset 60s warning for new quarter
+  _60sWarningFired = false;
   saveState(); render();
 }
 
@@ -1063,9 +1078,7 @@ function swapSlots() { hapticTap(); state.hpSlot = state.hpSlot === 'left' ? 'ri
 // ── POSITION ──
 function setPosition(pos) {
   hapticTap();
-  // Toggle off if already selected
   state.currentPosition = state.currentPosition === pos ? null : pos;
-  // Always write to current quarter too
   const qi = Math.min(state.quarter - 1, 3);
   state.quarters[qi].position = state.currentPosition;
   saveState(); render();
@@ -1089,8 +1102,6 @@ function scoreRight(type) {
   else hapticBehind();
   addScore(rightKey(), type);
 }
-function undoLeft(type)  { undoTeamScore(leftKey(), type); }
-function undoRight(type) { undoTeamScore(rightKey(), type); }
 
 function calcScore(g, b) { return g * 6 + b; }
 
@@ -1099,22 +1110,14 @@ function addScore(team, type) {
   pushAction({ type: 'teamScore', team, scoreType: type });
   state.copied = false; saveState(); render();
 }
-function undoTeamScore(team, type) { if (state[team][type] > 0) { state[team][type]--; hapticUndo(); } saveState(); render(); }
 
 function alekScore(type) {
   const qi = Math.min(state.quarter - 1, 3);
   state.alek[type]++;
   currentQ()[type]++;
-  if (type === 'goals') {
-    state.hp.goals++;
-    hapticAlekGoal();
-    showGoalFlash(true);
-  } else if (type === 'behinds') {
-    state.hp.behinds++;
-    hapticBehind();
-  } else if (type === 'shots') {
-    hapticMissedShot();
-  }
+  if (type === 'goals') { state.hp.goals++; hapticAlekGoal(); showGoalFlash(true); }
+  else if (type === 'behinds') { state.hp.behinds++; hapticBehind(); }
+  else if (type === 'shots') { hapticMissedShot(); }
   pushAction({ type: 'alekScore', scoreType: type, quarterIdx: qi });
   state.copied = false; saveState(); render();
 }
@@ -1122,30 +1125,26 @@ function updateOppName(v) { state.opp.name = v; saveState(); }
 
 // ── FIXTURE DATA ──
 const FIXTURE = [
-  { dateStr: '2025-05-02', opponent: 'Cockburn',       time: null,            venue: 'Frankland Park',                   home: true  },
-  { dateStr: '2025-05-02', opponent: 'Kardinya',        time: null,            venue: 'Frankland Park (away)',            home: false },
-  { dateStr: '2026-05-09', opponent: 'Jandakot',        time: '8:30–10:30 am', venue: 'Frankland Park',                   home: true  },
-  { dateStr: '2026-05-15', opponent: 'South Coogee',    time: '5:30–7:30 pm',  venue: 'Frankland Park',                   home: true  },
-  { dateStr: '2026-05-23', opponent: 'HPFC Green',      time: '8:30–10:30 am', venue: 'Frankland Park',                   home: true  },
+  { dateStr: '2025-05-02', opponent: 'Cockburn',       time: null,             venue: 'Frankland Park',                  home: true  },
+  { dateStr: '2025-05-02', opponent: 'Kardinya',        time: null,             venue: 'Frankland Park (away)',           home: false },
+  { dateStr: '2026-05-09', opponent: 'Jandakot',        time: '8:30–10:30 am',  venue: 'Frankland Park',                  home: true  },
+  { dateStr: '2026-05-15', opponent: 'South Coogee',    time: '5:30–7:30 pm',   venue: 'Frankland Park',                  home: true  },
+  { dateStr: '2026-05-23', opponent: 'HPFC Green',      time: '8:30–10:30 am',  venue: 'Frankland Park',                  home: true  },
   { dateStr: '2026-06-06', opponent: 'Mundijong',       time: '10:00 am–12:00', venue: 'Frankland Park',                  home: true  },
   { dateStr: '2026-06-13', opponent: 'Bibra Lakes',     time: '10:00 am–12:00', venue: 'Meller Park',                    home: false },
   { dateStr: '2026-06-20', opponent: 'Fremantle City',  time: '10:00 am–12:00', venue: 'Frankland Park',                  home: true  },
-  { dateStr: '2026-06-27', opponent: 'Kwinana',         time: '8:30–10:30 am', venue: 'Orelia District Sports Complex',  home: false },
+  { dateStr: '2026-06-27', opponent: 'Kwinana',         time: '8:30–10:30 am',  venue: 'Orelia District Sports Complex', home: false },
   { dateStr: '2026-07-04', opponent: 'Kelmscott',       time: '10:00 am–12:00', venue: 'Frankland Park',                  home: true  },
   { dateStr: '2026-07-25', opponent: 'Roleystone',      time: '10:00 am–12:00', venue: 'Springdale Park',                home: false },
-  { dateStr: '2026-08-01', opponent: 'Mundijong',       time: '8:30–11:30 am', venue: 'Briggs Park',                    home: false },
+  { dateStr: '2026-08-01', opponent: 'Mundijong',       time: '8:30–11:30 am',  venue: 'Briggs Park',                   home: false },
   { dateStr: '2026-08-08', opponent: 'HPFC Red',        time: '10:00 am–12:00', venue: 'Frankland Park',                  home: true  },
-  { dateStr: '2026-08-14', opponent: 'Cockburn',        time: '6:00–7:30 pm',  venue: 'Davilak Reserve',                home: false },
+  { dateStr: '2026-08-14', opponent: 'Cockburn',        time: '6:00–7:30 pm',   venue: 'Davilak Reserve',               home: false },
 ];
 
-// Games already completed (by opponent + rough date — used to mark fixture rows as done)
-const COMPLETED_OPPONENTS = ['Cockburn (R1)', 'Kardinya', 'Jandakot', 'South Coogee'];
-
 function todayAWST() {
-  // Use AWST (UTC+8) to determine "today" for game-day detection
   const now = new Date();
   const awst = new Date(now.getTime() + (8 * 60 * 60 * 1000));
-  return awst.toISOString().slice(0, 10); // 'YYYY-MM-DD'
+  return awst.toISOString().slice(0, 10);
 }
 
 function getGameDayOpponent() {
@@ -1153,50 +1152,31 @@ function getGameDayOpponent() {
   return FIXTURE.find(f => f.dateStr === today) || null;
 }
 
-// Auto-fill opponent on load if game day and name not yet set
 function autoFillOpponent() {
-  if (gameStarted()) return; // don't override a game in progress
-  if (state.opp.name.trim()) return; // already named
+  if (gameStarted()) return;
+  if (state.opp.name.trim()) return;
   const game = getGameDayOpponent();
   if (game) {
     state.opp.name = game.opponent;
-    // Also set home/away slot to match fixture
     state.hpSlot = game.home ? 'left' : 'right';
     saveState();
   }
 }
 
-// ── FIXTURE MODAL ──
-function openFixture() {
-  hapticTap();
-  renderFixtureModal();
-  document.getElementById('fixture-modal').classList.add('visible');
-}
-
-function closeFixture() {
-  hapticTap();
-  document.getElementById('fixture-modal').classList.remove('visible');
-}
+function openFixture() { hapticTap(); renderFixtureModal(); document.getElementById('fixture-modal').classList.add('visible'); }
+function closeFixture() { hapticTap(); document.getElementById('fixture-modal').classList.remove('visible'); }
 
 function renderFixtureModal() {
   const today = todayAWST();
-  // Determine which games are done based on date being in the past
   let nextFound = false;
-  const rows = FIXTURE.map((f, i) => {
+  const rows = FIXTURE.map((f) => {
     const isPast = f.dateStr < today;
     const isToday = f.dateStr === today;
     let pillClass, pillText;
-    if (isPast) {
-      pillClass = 'pill-done'; pillText = '✓ Done';
-    } else if (isToday && !nextFound) {
-      nextFound = true;
-      pillClass = 'pill-next'; pillText = '▶ Today';
-    } else if (!nextFound) {
-      nextFound = true;
-      pillClass = 'pill-next'; pillText = '▶ Next';
-    } else {
-      pillClass = 'pill-upcoming'; pillText = '';
-    }
+    if (isPast) { pillClass = 'pill-done'; pillText = '✓ Done'; }
+    else if (isToday && !nextFound) { nextFound = true; pillClass = 'pill-next'; pillText = '▶ Today'; }
+    else if (!nextFound) { nextFound = true; pillClass = 'pill-next'; pillText = '▶ Next'; }
+    else { pillClass = 'pill-upcoming'; pillText = ''; }
     const dateObj = new Date(f.dateStr + 'T00:00:00');
     const dayLabel = dateObj.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
     const ha = f.home ? 'Home' : 'Away';
@@ -1213,7 +1193,6 @@ function renderFixtureModal() {
   document.getElementById('fixture-list').innerHTML = rows;
 }
 
-// Close modal on backdrop tap
 document.getElementById('fixture-modal').addEventListener('click', function(e) {
   if (e.target === this) closeFixture();
 });
@@ -1242,7 +1221,6 @@ function buildClipboard() {
   const highlight = (document.getElementById('notes-highlight')?.value || '').trim();
   const focus     = (document.getElementById('notes-focus')?.value || '').trim();
 
-  // Quarter breakdown
   const posLabel = { defender: '🛡️ Defender', midfielder: '🏃 Midfielder', forward: '🏹 Forward' };
   const qLines = state.quarters.map((q, i) => {
     const qPts  = calcScore(q.goals, q.behinds);
@@ -1260,9 +1238,23 @@ function buildClipboard() {
     return `Q${i + 1}: ${pos} — ${score} · ${shotStr}${skills}`;
   });
 
+  // Quarter moments block
+  const emotionLabels = { '🔥': '🔥', '😐': '😐', '😤': '😤' };
+  const momentLines = state.quarterMoments.map((m, i) => {
+    const emotion = state.quarterEmotions[i];
+    const emotionStr = emotion ? ` ${emotionLabels[emotion]}` : '';
+    const text = m.trim();
+    return text ? `Q${i + 1}:${emotionStr} ${text}` : null;
+  }).filter(Boolean);
+
+  const momentsBlock = momentLines.length > 0
+    ? [``, `--- Quarter Moments ---`, ...momentLines]
+    : [];
+
   const notesBlock = (highlight || focus)
     ? [``, `--- Coach Notes ---`, `Highlight: ${highlight}`, `Focus: ${focus}`, `====================`]
     : [``, `====================`];
+
   return [
     `=== MATCH RESULT — ${d} ===`, ``,
     `HOME                 ${home.name}`,
@@ -1281,6 +1273,7 @@ function buildClipboard() {
     ``,
     `--- Quarter Breakdown ---`,
     ...qLines,
+    ...momentsBlock,
     ...notesBlock,
   ].join('\n');
 }
@@ -1304,7 +1297,7 @@ function resetMatch() {
   hapticTap();
   clearInterval(timerInterval);
   _60sWarningFired = false;
-  actionStack.length = 0; // clear undo stack
+  actionStack.length = 0;
   const ql   = state.quarterLength;
   const slot = state.hpSlot;
   Object.assign(state, {
@@ -1316,6 +1309,8 @@ function resetMatch() {
     runStartedAt: null, secondsAtStart: ql * 60,
     currentPosition: null,
     quarters: DEFAULT_STATE.quarters.map(q => ({...q})),
+    quarterMoments: ['', '', '', ''],
+    quarterEmotions: [null, null, null, null],
   });
   const btn = document.getElementById('copy-btn');
   if (btn) { btn.textContent = '📋 Copy Result to Clipboard'; btn.style.background = '#f5c518'; btn.style.color = '#000'; }
@@ -1323,26 +1318,19 @@ function resetMatch() {
   const nf = document.getElementById('notes-focus');
   if (nh) nh.value = '';
   if (nf) nf.value = '';
-  // Restore editable clock
   restoreClockDisplay();
   saveState(); render();
 }
 
-// ── GLOBAL ACTION STACK (for undo) ──
-// Each entry: { type, skill?, scoreType?, quarterIdx }
+// ── GLOBAL ACTION STACK ──
 const actionStack = [];
-
-function pushAction(entry) {
-  actionStack.push(entry);
-  if (actionStack.length > 50) actionStack.shift(); // cap stack
-}
+function pushAction(entry) { actionStack.push(entry); if (actionStack.length > 50) actionStack.shift(); }
 
 function globalUndo() {
   if (actionStack.length === 0) { hapticUndo(); return; }
   hapticUndo();
   const last = actionStack.pop();
   const qi = last.quarterIdx;
-
   if (last.type === 'alekScore') {
     const t = last.scoreType;
     if (state.alek[t] > 0) state.alek[t]--;
@@ -1354,13 +1342,11 @@ function globalUndo() {
     const aKey = s + 'Attempts', sKey = s + 'Success';
     if (state.alek[aKey] > 0) state.alek[aKey]--;
     if (qi !== undefined && state.quarters[qi][aKey] > 0) state.quarters[qi][aKey]--;
-    // clamp success <= attempts
     if (state.alek[sKey] > state.alek[aKey]) state.alek[sKey] = state.alek[aKey];
     if (qi !== undefined && state.quarters[qi][sKey] > state.quarters[qi][aKey]) state.quarters[qi][sKey] = state.quarters[qi][aKey];
   } else if (last.type === 'skillWon') {
     const s = last.skill;
     const aKey = s + 'Attempts', sKey = s + 'Success';
-    // Won recorded attempt+success — undo both
     if (state.alek[sKey] > 0) state.alek[sKey]--;
     if (state.alek[aKey] > 0) state.alek[aKey]--;
     if (qi !== undefined && state.quarters[qi][sKey] > 0) state.quarters[qi][sKey]--;
@@ -1369,14 +1355,8 @@ function globalUndo() {
     const team = last.team, t = last.scoreType;
     if (state[team][t] > 0) state[team][t]--;
   }
-
-  // Flash button
   const btn = document.getElementById('global-undo-btn');
-  if (btn) {
-    btn.classList.add('flash');
-    setTimeout(() => btn.classList.remove('flash'), 400);
-  }
-
+  if (btn) { btn.classList.add('flash'); setTimeout(() => btn.classList.remove('flash'), 400); }
   state.copied = false;
   saveState(); render();
 }
@@ -1390,39 +1370,30 @@ function skillAttempt(skill) {
   saveState(); render();
 }
 
-// Won = attempt + success in one tap
 function skillWon(skill) {
   const qi = Math.min(state.quarter - 1, 3);
   if (skill === 'tackle') {
-    state.alek.tackleAttempts++;
-    state.alek.tackleSuccess++;
-    currentQ().tackleAttempts++;
-    currentQ().tackleSuccess++;
+    state.alek.tackleAttempts++; state.alek.tackleSuccess++;
+    currentQ().tackleAttempts++; currentQ().tackleSuccess++;
     hapticTackle();
   }
   if (skill === 'disposal') {
-    state.alek.disposalAttempts++;
-    state.alek.disposalSuccess++;
-    currentQ().disposalAttempts++;
-    currentQ().disposalSuccess++;
+    state.alek.disposalAttempts++; state.alek.disposalSuccess++;
+    currentQ().disposalAttempts++; currentQ().disposalSuccess++;
     hapticDisposal();
   }
   pushAction({ type: 'skillWon', skill, quarterIdx: qi });
   saveState(); render();
 }
 
-// ── LANDSCAPE DETECTION ──
+// ── ORIENTATION ──
 function applyOrientation() {
   const lw = document.getElementById('landscape-wrapper');
   const isLandscape = window.innerWidth > window.innerHeight && window.innerHeight < 500;
   if (isLandscape) {
-    lw.style.flexDirection = 'row';
-    lw.style.alignItems = 'flex-start';
-    lw.style.gap = '10px';
+    lw.style.flexDirection = 'row'; lw.style.alignItems = 'flex-start'; lw.style.gap = '10px';
   } else {
-    lw.style.flexDirection = 'column';
-    lw.style.alignItems = 'center';
-    lw.style.gap = '0';
+    lw.style.flexDirection = 'column'; lw.style.alignItems = 'center'; lw.style.gap = '0';
   }
 }
 window.addEventListener('resize', applyOrientation);
@@ -1435,28 +1406,20 @@ function pct(pf, pa) { return pa > 0 ? ((pf/pa)*100).toFixed(1) : null; }
 function render() {
   const sHP  = calcScore(state.hp.goals, state.hp.behinds);
   const sOpp = calcScore(state.opp.goals, state.opp.behinds);
-  const hpIsLeft = state.hpSlot === 'left';
-  const hpIsHome = hpIsLeft;
+  const hpIsLeft  = state.hpSlot === 'left';
+  const hpIsHome  = hpIsLeft;
   const hpLeading  = sHP > sOpp;
   const oppLeading = sOpp > sHP;
 
-  // Clock + quarter
   document.getElementById('qtr-label').textContent = state.finished ? 'FT' : `Q${state.quarter}`;
-  // Only update clock display if we're not currently in edit mode
   const clock = document.getElementById('clock');
   if (clock) {
     clock.textContent = fmt(state.secondsLeft);
-    // Editable (dashed underline hint) only before game starts
-    if (state.running) {
-      clock.className = 'clock running';
-    } else if (gameStarted()) {
-      clock.className = 'clock stopped';
-    } else {
-      clock.className = 'clock stopped editable';
-    }
+    if (state.running) clock.className = 'clock running';
+    else if (gameStarted()) clock.className = 'clock stopped';
+    else clock.className = 'clock stopped editable';
   }
 
-  // Timer buttons — always explicitly manage visibility
   const timerBtnsEl = document.getElementById('timer-btns');
   if (state.finished) {
     if (timerBtnsEl) timerBtnsEl.style.display = 'none';
@@ -1476,7 +1439,6 @@ function render() {
     }
   }
 
-  // Left / right data
   const leftIsHP  = hpIsLeft;
   const leftData  = leftIsHP ? state.hp : state.opp;
   const leftSc    = leftIsHP ? sHP : sOpp;
@@ -1485,7 +1447,7 @@ function render() {
   const leftLeading  = leftIsHP ? hpLeading : oppLeading;
   const rightLeading = leftIsHP ? oppLeading : hpLeading;
 
-  // ── LEFT ──
+  // LEFT
   const leftCol = document.getElementById('left-col');
   leftCol.className = leftIsHP ? 'team-col left hp-home' : 'team-col left ' + (leftLeading ? 'opp-lead' : 'opp-default');
   document.getElementById('left-pos-label').textContent = 'HOME';
@@ -1518,7 +1480,7 @@ function render() {
     document.getElementById('left-behind-btn').style.cssText = 'background:#1a2a4a;color:#fff;border:none;';
   }
 
-  // ── RIGHT ──
+  // RIGHT
   const rightCol = document.getElementById('right-col');
   const rightIsHP = !leftIsHP;
   rightCol.className = rightIsHP ? 'team-col right hp-away' : 'team-col right ' + (rightLeading ? 'opp-lead' : 'opp-default');
@@ -1552,12 +1514,10 @@ function render() {
     document.getElementById('right-behind-btn').style.cssText = 'background:#1a2a4a;color:#fff;border:none;';
   }
 
-  // ── ALEK ──
+  // ALEK
   const aleksPts = calcScore(state.alek.goals, state.alek.behinds);
   const totalShots = state.alek.goals + state.alek.behinds + state.alek.shots;
   const accuracy   = totalShots > 0 ? Math.round((state.alek.goals / totalShots) * 100) : null;
-
-  // Match stats row
   const tA = state.alek.tackleAttempts, tS = state.alek.tackleSuccess;
   const dA = state.alek.disposalAttempts, dS = state.alek.disposalSuccess;
 
@@ -1579,7 +1539,6 @@ function render() {
   setSpan('alek-stat-dis',     dA > 0 ? `${dS}/${dA}` : null, dA > 0);
   setSpan('alek-stat-dis-lbl', 'dis', dA > 0);
 
-  // Q stats row
   const cq = state.quarters[Math.min(state.quarter - 1, 3)];
   const cqPts = calcScore(cq.goals, cq.behinds);
   const cqShots = cq.goals + cq.behinds + cq.shots;
@@ -1599,30 +1558,26 @@ function render() {
   setSpan('alek-q-dis',    cq.disposalAttempts > 0 ? `${cq.disposalSuccess}/${cq.disposalAttempts}` : null, cq.disposalAttempts > 0);
   setSpan('alek-q-dis-lbl','dis', cq.disposalAttempts > 0);
 
-  // Scoring button badges
   function setBadge(id, val) {
     const el = document.getElementById(id);
     if (!el) return;
-    el.textContent = val;
-    el.style.display = val > 0 ? '' : 'none';
+    el.textContent = val; el.style.display = val > 0 ? '' : 'none';
   }
   setBadge('badge-goals',   state.alek.goals);
   setBadge('badge-behinds', state.alek.behinds);
   setBadge('badge-shots',   state.alek.shots);
-  // Skill badges: attempts on attempt btn, wins on won btn
   setBadge('badge-tk-attempt',  tA);
   setBadge('badge-tk-won',      tS);
   setBadge('badge-dis-attempt', dA);
   setBadge('badge-dis-clean',   dS);
 
-  // Position buttons
   const posMap = { defender: 'pos-def', midfielder: 'pos-mid', forward: 'pos-fwd' };
   Object.entries(posMap).forEach(([pos, id]) => {
     const btn = document.getElementById(id);
     if (btn) btn.className = 'pos-btn' + (state.currentPosition === pos ? ' active' : '');
   });
 
-  // ── FULL TIME ──
+  // FULL TIME
   if (state.finished) {
     document.getElementById('fulltime').style.display = '';
     const oppName = state.opp.name.trim() || (hpIsHome ? 'Away Team' : 'Home Team');
@@ -1657,24 +1612,32 @@ function render() {
       (state.alek.tackleAttempts > 0 ? `<span> · Tackles ${state.alek.tackleSuccess}/${state.alek.tackleAttempts}</span>` : '') +
       (state.alek.disposalAttempts > 0 ? `<span> · Disposals ${state.alek.disposalSuccess}/${state.alek.disposalAttempts}</span>` : '');
 
-    // Restore notes from state (in case of reload)
     const nh = document.getElementById('notes-highlight');
     const nf = document.getElementById('notes-focus');
     if (nh && !nh.dataset.restored) { nh.value = state.notes.highlight || ''; nh.dataset.restored = '1'; }
     if (nf && !nf.dataset.restored) { nf.value = state.notes.focus || '';     nf.dataset.restored = '1'; }
+
+    // Restore Q4 moment
+    const q4inp = document.getElementById('q4-moment-input');
+    if (q4inp && !q4inp.dataset.restored) {
+      q4inp.value = state.quarterMoments[3] || '';
+      q4inp.dataset.restored = '1';
+    }
+    // Restore Q4 emotion buttons
+    const savedQ4Emotion = state.quarterEmotions[3];
+    ['🔥','😐','😤'].forEach(e => {
+      const id = e === '🔥' ? 'q4-em-fire' : e === '😐' ? 'q4-em-steady' : 'q4-em-tough';
+      const btn = document.getElementById(id);
+      if (btn) btn.classList.toggle('selected', savedQ4Emotion === e);
+    });
 
     document.getElementById('copy-ta').value = buildClipboard();
   } else {
     document.getElementById('fulltime').style.display = 'none';
   }
 
-  // ── LOCK / UNLOCK all scoring buttons at full time ──
-  const scoringBtnIds = [
-    'left-goal-btn','left-behind-btn',
-    'right-goal-btn','right-behind-btn',
-  ];
   const allActionBtns = [
-    ...scoringBtnIds.map(id => document.getElementById(id)),
+    ...['left-goal-btn','left-behind-btn','right-goal-btn','right-behind-btn'].map(id => document.getElementById(id)),
     ...document.querySelectorAll('.alek-btn, .skill-btn, .pos-btn'),
     document.getElementById('global-undo-btn'),
   ].filter(Boolean);
@@ -1693,9 +1656,7 @@ render();
 </script>
 <script>
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js');
-  });
+  window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js'); });
 }
 </script>
 </body>
