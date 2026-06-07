@@ -1659,5 +1659,225 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js'); });
 }
 </script>
+<!-- ====== GESTURE + RESKIN LAYER (v3) — appended, engine untouched ====== -->
+<style>
+/* Hide the old explicit action buttons; gestures replace them */
+.timer-btns { display: none !important; }
+.score-btns { display: none !important; }
+.alek-btn-grid { display: none !important; }
+.skills-section { display: none !important; } /* old skills buttons replaced by gesture Disposal/Tackle */
+
+/* Bigger scores */
+.big-score { font-size: 64px !important; line-height: 0.92 !important; }
+.afl-fmt   { font-size: 20px !important; font-weight: bold !important; margin-top: 2px !important; }
+
+/* Make the whole team column a gesture target */
+.team-col { -webkit-user-select: none; user-select: none; position: relative; }
+.gz-hint {
+  font-size: 9px; letter-spacing: 1px; color: rgba(255,255,255,0.45);
+  margin-top: 6px; text-transform: uppercase;
+}
+.gz-fill {
+  position: absolute; bottom: 0; left: 0; height: 4px; width: 0;
+  background: rgba(255,255,255,0.85); border-radius: 0 0 18px 18px;
+}
+
+/* Quarter + clock as gesture targets */
+.qtr-label { position: relative; }
+.gz-micro { font-size: 8px; letter-spacing: 1px; color: rgba(245,197,24,0.55);
+  text-transform: uppercase; text-align: center; display: block; margin-top: 1px; }
+.clock { position: relative; }
+
+.team-col, .qtr-label, .clock, .gz-act, .gz-pos, .gz-actions, .scoreboard {
+  -webkit-user-select: none !important; -moz-user-select: none !important;
+  user-select: none !important; -webkit-touch-callout: none !important;
+}
+/* New gesture action buttons (Score / Disposal / Tackle) */
+.gz-actions {
+  width: 100%; max-width: 480px; display: flex; flex-direction: column;
+  gap: 14px; margin-top: 4px;
+}
+.gz-act {
+  position: relative; overflow: hidden; border: none; border-radius: 16px;
+  color: #fff; padding: 20px 12px; font-family: inherit;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.gz-act .gz-lab { font-size: 21px; font-weight: bold; letter-spacing: 0.5px; }
+.gz-act .gz-sub { font-size: 11px; opacity: 0.82; }
+.gz-act.score  { background: linear-gradient(135deg,#b8860b,#8a6508); }
+.gz-act.disp   { background: linear-gradient(135deg,#1a5f8a,#0f2d4a); }
+.gz-act.tackle { background: linear-gradient(135deg,#6d28d9,#3a1f5a); }
+.gz-act:active { filter: brightness(1.2); }
+
+/* Position cycle button (replaces 3 separate pos buttons) */
+.position-btns { display: none !important; }
+.gz-pos {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 11px; color: #fff; padding: 8px 14px; font-family: inherit;
+  font-size: 14px; font-weight: bold; display: flex; align-items: center; gap: 7px;
+  min-width: 130px; justify-content: center;
+}
+.gz-pos.set { border-color: rgba(245,197,24,0.5); background: rgba(245,197,24,0.12); color: var(--gold); }
+.gz-pos .gz-pos-ic { font-size: 17px; }
+</style>
+
+<script>
+/* ===== Gesture layer — calls EXISTING engine functions only ===== */
+(function(){
+  const DBL = 260, HOLD = 500;
+
+  function bindGesture(el, opts){
+    let hTimer=null, hFired=false, tTimer=null, pending=false, sxy=null, moved=false;
+    const fill = opts.fill || null;
+    const startV=()=>{ if(!fill)return; fill.style.transition='none'; fill.style.width='0'; void fill.offsetWidth; fill.style.transition='width '+HOLD+'ms linear'; fill.style.width='100%'; };
+    const clearV=()=>{ if(!fill)return; fill.style.transition='none'; fill.style.width='0'; };
+
+    el.addEventListener('touchstart', e=>{
+      moved=false; hFired=false; sxy=[e.touches[0].clientX,e.touches[0].clientY];
+      if(opts.hold){ startV(); hTimer=setTimeout(()=>{ hFired=true; clearV(); if(tTimer){clearTimeout(tTimer);tTimer=null;pending=false;} opts.hold(); }, HOLD); }
+    }, {passive:true});
+
+    el.addEventListener('touchmove', e=>{
+      if(!sxy)return;
+      if(Math.abs(e.touches[0].clientX-sxy[0])>14 || Math.abs(e.touches[0].clientY-sxy[1])>14){
+        moved=true; if(hTimer){clearTimeout(hTimer);hTimer=null;} clearV();
+      }
+    }, {passive:true});
+
+    el.addEventListener('touchcancel', ()=>{ if(hTimer){clearTimeout(hTimer);hTimer=null;} clearV(); });
+    el.addEventListener('selectstart', e=>e.preventDefault());
+    el.addEventListener('contextmenu', e=>e.preventDefault());
+    el.addEventListener('touchend', e=>{
+      if(hTimer){clearTimeout(hTimer);hTimer=null;} clearV();
+      if(hFired||moved) return;
+      e.preventDefault();
+      if(opts.dbl){
+        if(pending){ clearTimeout(tTimer); tTimer=null; pending=false; opts.dbl(); }
+        else { pending=true; tTimer=setTimeout(()=>{ pending=false; tTimer=null; if(opts.tap) opts.tap(); }, DBL); }
+      } else if(opts.tap){ opts.tap(); }
+    });
+  }
+
+  /* --- Build new action buttons under the Alek panel --- */
+  function buildActions(){
+    const panel = document.querySelector('.alek-panel');
+    if(!panel || document.getElementById('gz-actions')) return;
+    const wrap = document.createElement('div');
+    wrap.className='gz-actions'; wrap.id='gz-actions';
+    wrap.innerHTML = `
+      <button class="gz-act score" id="gz-score">
+        <span class="gz-lab">🏉 Score</span>
+        <span class="gz-sub">tap miss · double-tap behind · hold goal</span>
+        <span class="gz-fill"></span>
+      </button>
+      <button class="gz-act disp" id="gz-disp">
+        <span class="gz-lab">🤲 Disposal</span>
+        <span class="gz-sub">tap attempt · hold good pass</span>
+        <span class="gz-fill"></span>
+      </button>
+      <button class="gz-act tackle" id="gz-tackle">
+        <span class="gz-lab">🤼 Tackle</span>
+        <span class="gz-sub">tap attempt · hold tackle won</span>
+        <span class="gz-fill"></span>
+      </button>`;
+    panel.appendChild(wrap);
+
+    bindGesture(document.getElementById('gz-score'), {
+      tap:()=>alekScore('shots'), dbl:()=>alekScore('behinds'), hold:()=>alekScore('goals'),
+      fill: document.querySelector('#gz-score .gz-fill')
+    });
+    bindGesture(document.getElementById('gz-disp'), {
+      tap:()=>skillAttempt('disposal'), hold:()=>skillWon('disposal'),
+      fill: document.querySelector('#gz-disp .gz-fill')
+    });
+    bindGesture(document.getElementById('gz-tackle'), {
+      tap:()=>skillAttempt('tackle'), hold:()=>skillWon('tackle'),
+      fill: document.querySelector('#gz-tackle .gz-fill')
+    });
+  }
+
+  /* --- Team score gestures (double-tap behind, hold goal) --- */
+  function bindTeams(){
+    const L = document.getElementById('left-col');
+    const R = document.getElementById('right-col');
+    [['left',L],['right',R]].forEach(([side,col])=>{
+      if(!col || col.dataset.gz) return; col.dataset.gz='1';
+      const fill=document.createElement('span'); fill.className='gz-fill'; col.appendChild(fill);
+      const hint=document.createElement('div'); hint.className='gz-hint'; hint.textContent='2× behind · hold goal'; col.appendChild(hint);
+      const fn = side==='left' ? scoreLeft : scoreRight;
+      bindGesture(col, { dbl:()=>fn('behinds'), hold:()=>fn('goals'), fill });
+    });
+  }
+
+  /* --- Quarter long-press = next (Q4 = confirm end match) --- */
+  function bindQuarter(){
+    const q = document.getElementById('qtr-label');
+    if(!q || q.dataset.gz) return; q.dataset.gz='1';
+    const micro=document.createElement('span'); micro.className='gz-micro'; micro.textContent='hold → next'; q.parentNode.appendChild(micro);
+    bindGesture(q, { hold:()=>{
+      if(state.quarter >= 4 && !state.finished){
+        if(confirm('End the match? This opens full-time and cannot be undone.')) nextQuarter();
+      } else { nextQuarter(); }
+    }});
+  }
+
+  /* --- Clock: tap = existing edit (pre-game), hold = start/stop --- */
+  function bindClock(){
+    const c = document.getElementById('clock');
+    if(!c || c.dataset.gz) return; c.dataset.gz='1';
+    c.removeAttribute('onclick'); // remove old direct tap-edit; gesture handles it
+    const micro=document.createElement('span'); micro.className='gz-micro'; micro.textContent='tap edit · hold start/stop'; c.parentNode.appendChild(micro);
+    bindGesture(c, {
+      tap:()=>{ if(!gameStarted()) tryEditClock(); },
+      hold:()=>toggleTimer()
+    });
+  }
+
+  /* --- Position cycle button (No position → DEF → MID → FWD) --- */
+  const POS=[{ic:'⬜',txt:'No position',k:null,set:false},
+             {ic:'🛡️',txt:'Defender',k:'defender',set:true},
+             {ic:'🏃',txt:'Midfielder',k:'midfielder',set:true},
+             {ic:'🏹',txt:'Forward',k:'forward',set:true}];
+  function buildPosCycle(){
+    const row = document.querySelector('.alek-header-row');
+    if(!row || document.getElementById('gz-pos')) return;
+    const btn=document.createElement('button');
+    btn.className='gz-pos'; btn.id='gz-pos';
+    btn.innerHTML='<span class="gz-pos-ic" id="gz-pos-ic">⬜</span><span id="gz-pos-txt">No position</span>';
+    row.appendChild(btn);
+    btn.addEventListener('click',()=>{
+      const cur = state.currentPosition;
+      let idx = POS.findIndex(p=>p.k===cur); if(idx<0) idx=0;
+      const next = POS[(idx+1)%4];
+      hapticTap();
+      // set directly through engine state + existing persistence/render path
+      state.currentPosition = next.k;
+      state.quarters[Math.min(state.quarter-1,3)].position = next.k;
+      saveState(); render(); syncPos();
+    });
+    syncPos();
+  }
+  function syncPos(){
+    const p = POS.find(x=>x.k===state.currentPosition) || POS[0];
+    const ic=document.getElementById('gz-pos-ic'), tx=document.getElementById('gz-pos-txt'), b=document.getElementById('gz-pos');
+    if(ic) ic.textContent=p.ic; if(tx) tx.textContent=p.txt;
+    if(b) b.classList.toggle('set', p.set);
+  }
+
+  /* --- Wrap render so the position button stays in sync --- */
+  function wrapRender(){
+    if(window.__gzRenderWrapped) return; window.__gzRenderWrapped=true;
+    const orig = window.render;
+    window.render = function(){ orig.apply(this, arguments); try{ syncPos(); }catch(e){} };
+  }
+
+  function init(){
+    buildActions(); bindTeams(); bindQuarter(); bindClock(); buildPosCycle(); wrapRender();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+
 </body>
 </html>
