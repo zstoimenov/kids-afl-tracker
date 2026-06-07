@@ -1,4 +1,4 @@
-const CACHE = 'alek-v1';
+const CACHE = 'alek-v3';
 const SHELL = ['./index.html'];
 
 self.addEventListener('install', e => {
