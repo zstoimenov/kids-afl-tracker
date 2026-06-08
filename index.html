@@ -568,7 +568,7 @@
 <!-- HEADER -->
 <div class="header">
   <div class="header-sub">Kids League</div>
-  <div class="header-title">AFL Scorecard <span style="font-size:12px;color:var(--gold);font-weight:normal;letter-spacing:2px;opacity:0.7;">v2.1</span></div>
+  <div class="header-title">AFL Scorecard <span style="font-size:12px;color:var(--gold);font-weight:normal;letter-spacing:2px;opacity:0.7;">v3</span></div>
   <div class="header-actions">
     <button class="global-undo-btn" id="global-undo-btn" onclick="globalUndo()">↩ Undo</button>
     <button class="reset-btn" onclick="resetMatch()">↺ New Match</button>
@@ -1662,20 +1662,22 @@ if ('serviceWorker' in navigator) {
 <!-- ====== GESTURE + RESKIN LAYER (v3) — appended, engine untouched ====== -->
 <style>
 /* Hide the old explicit action buttons; gestures replace them */
-.timer-btns { display: none !important; }
+.timer-btns { display: flex !important; flex-direction: column; justify-content: center; gap: 6px; min-width: 104px; }
+#next-btn { display: none !important; }
+#start-btn { font-size: 16px !important; font-weight: bold !important; padding: 16px 10px !important; border-radius: 12px !important; width: 100%; }
 .score-btns { display: none !important; }
 .alek-btn-grid { display: none !important; }
 .skills-section { display: none !important; } /* old skills buttons replaced by gesture Disposal/Tackle */
 
 /* Bigger scores */
-.big-score { font-size: 64px !important; line-height: 0.92 !important; }
-.afl-fmt   { font-size: 20px !important; font-weight: bold !important; margin-top: 2px !important; }
+.big-score { font-size: 54px !important; line-height: 0.9 !important; }
+.afl-fmt   { font-size: 17px !important; font-weight: bold !important; margin-top: 1px !important; }
 
 /* Make the whole team column a gesture target */
 .team-col { -webkit-user-select: none; user-select: none; position: relative; }
 .gz-hint {
-  font-size: 9px; letter-spacing: 1px; color: rgba(255,255,255,0.45);
-  margin-top: 6px; text-transform: uppercase;
+  font-size: 9px; letter-spacing: 0.5px; color: rgba(255,255,255,0.45);
+  margin-top: 2px; margin-bottom: 0; text-transform: uppercase;
 }
 .gz-fill {
   position: absolute; bottom: 0; left: 0; height: 4px; width: 0;
@@ -1695,15 +1697,15 @@ if ('serviceWorker' in navigator) {
 /* New gesture action buttons (Score / Disposal / Tackle) */
 .gz-actions {
   width: 100%; max-width: 480px; display: flex; flex-direction: column;
-  gap: 14px; margin-top: 4px;
+  gap: 9px; margin-top: 2px;
 }
 .gz-act {
-  position: relative; overflow: hidden; border: none; border-radius: 16px;
-  color: #fff; padding: 20px 12px; font-family: inherit;
+  position: relative; overflow: hidden; border: none; border-radius: 14px;
+  color: #fff; padding: 13px 12px; font-family: inherit;
   display: flex; flex-direction: column; align-items: center; gap: 4px;
 }
-.gz-act .gz-lab { font-size: 21px; font-weight: bold; letter-spacing: 0.5px; }
-.gz-act .gz-sub { font-size: 11px; opacity: 0.82; }
+.gz-act .gz-lab { font-size: 19px; font-weight: bold; letter-spacing: 0.5px; }
+.gz-act .gz-sub { font-size: 10px; opacity: 0.82; margin-top: 2px; }
 .gz-act.score  { background: linear-gradient(135deg,#b8860b,#8a6508); }
 .gz-act.disp   { background: linear-gradient(135deg,#1a5f8a,#0f2d4a); }
 .gz-act.tackle { background: linear-gradient(135deg,#6d28d9,#3a1f5a); }
@@ -1872,7 +1874,7 @@ if ('serviceWorker' in navigator) {
   }
 
   function init(){
-    buildActions(); bindTeams(); bindQuarter(); bindClock(); buildPosCycle(); wrapRender();
+    buildActions(); bindTeams(); bindQuarter(); buildPosCycle(); wrapRender();
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
   else init();
