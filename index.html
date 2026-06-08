@@ -1737,6 +1737,25 @@ if ('serviceWorker' in navigator) {
 .gz-hint { margin-top: 1px !important; }
 .app-container, body { padding-top: 4px; }
 
+/* ---- v3 round 2: rebalance + align + fill bottom ---- */
+.qtr-label { font-size: 30px !important; }
+.clock { font-size: 30px !important; letter-spacing: 4px !important; }
+.big-score { font-size: 58px !important; line-height: 0.9 !important; }
+.afl-fmt { font-size: 18px !important; }
+/* align both score blocks to the same vertical baseline */
+.team-col { display: flex !important; flex-direction: column !important; align-items: center !important; }
+#left-name-wrap, #right-name-wrap { min-height: 22px; display: flex; align-items: center; justify-content: center; width: 100%; }
+.opp-input { margin: 0 !important; }
+.team-name-display { margin: 0 !important; }
+/* grow Alek action buttons into leftover space */
+.gz-act { padding: 16px 12px !important; }
+.gz-act .gz-lab { font-size: 20px !important; }
+.gz-act .gz-sub { font-size: 10.5px !important; }
+.gz-actions { gap: 10px !important; }
+#goal-flash .flash-text, #goal-flash .flash-sub { text-align: center !important; width: 100%; }
+
+
+
 </style>
 
 <script>
@@ -1768,6 +1787,7 @@ if ('serviceWorker' in navigator) {
     el.addEventListener('touchend', e=>{
       if(hTimer){clearTimeout(hTimer);hTimer=null;} clearV();
       if(hFired||moved) return;
+      if(opts.passThrough && e.target.closest(opts.passThrough)) { return; }
       e.preventDefault();
       if(opts.dbl){
         if(pending){ clearTimeout(tTimer); tTimer=null; pending=false; opts.dbl(); }
@@ -1823,7 +1843,7 @@ if ('serviceWorker' in navigator) {
       const fill=document.createElement('span'); fill.className='gz-fill'; col.appendChild(fill);
       const hint=document.createElement('div'); hint.className='gz-hint'; hint.textContent='2× behind · hold goal'; col.appendChild(hint);
       const fn = side==='left' ? scoreLeft : scoreRight;
-      bindGesture(col, { dbl:()=>fn('behinds'), hold:()=>fn('goals'), fill });
+      bindGesture(col, { dbl:()=>fn('behinds'), hold:()=>fn('goals'), fill, passThrough:'input,.opp-input,.team-name-display,[id$=name-wrap]' });
     });
   }
 
@@ -1832,11 +1852,7 @@ if ('serviceWorker' in navigator) {
     const q = document.getElementById('qtr-label');
     if(!q || q.dataset.gz) return; q.dataset.gz='1';
     const micro=document.createElement('span'); micro.className='gz-micro'; micro.textContent='hold → next'; q.parentNode.appendChild(micro);
-    bindGesture(q, { hold:()=>{
-      if(state.quarter >= 4 && !state.finished){
-        if(confirm('End the match? This opens full-time and cannot be undone.')) nextQuarter();
-      } else { nextQuarter(); }
-    }});
+    bindGesture(q, { hold:()=>{ nextQuarter(); } });
   }
 
   /* --- Clock: tap = existing edit (pre-game), hold = start/stop --- */
